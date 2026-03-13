@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6f9;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+            text-align: left;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .top-links {
+            margin-bottom: 20px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-links">
+        <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    </div>
+
+    <h2>Your Prediction History</h2>
+
+    {% if history %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Disease Type</th>
+            <th>Input Values</th>
+            <th>Prediction Result</th>
+            <th>Date & Time</th>
+        </tr>
+
+        {% for item in history %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.disease_type }}</td>
+            <td>
+                <pre>{{ json.loads(item.input_values) }}</pre>
+            </td>
+            <td>{{ item.prediction_result }}</td>
+            <td>{{ item.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No prediction history found.</p>
+    {% endif %}
+</body>
+</html>

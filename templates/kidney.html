@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kidney Disease Prediction</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body{
+background-color:#eef7ff;
+}
+
+.container-box{
+width:450px;
+margin:auto;
+margin-top:60px;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0px 5px 15px rgba(0,0,0,0.2);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+color:#0d6efd;
+}
+
+.top-buttons{
+display:flex;
+justify-content:space-between;
+margin-bottom:20px;
+}
+
+.result-box{
+margin-top:20px;
+padding:15px;
+border-radius:10px;
+text-align:center;
+font-weight:bold;
+font-size:18px;
+}
+
+.result-danger{
+background-color:#f8d7da;
+color:#842029;
+border:1px solid #f5c2c7;
+}
+
+.result-success{
+background-color:#d1e7dd;
+color:#0f5132;
+border:1px solid #badbcc;
+}
+
+.confidence-text{
+display:block;
+margin-top:8px;
+font-size:15px;
+font-weight:600;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container-box">
+
+<div class="top-buttons">
+<a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-sm">← Dashboard</a>
+<a href="{{ url_for('history') }}" class="btn btn-outline-dark btn-sm">View History</a>
+</div>
+
+<h2>🧬 Kidney Disease Prediction</h2>
+
+<form action="/predict_kidney" method="post">
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="age" placeholder="Age" required>
+</div>
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="bp" placeholder="Blood Pressure" required>
+</div>
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="sg" placeholder="Specific Gravity" required>
+</div>
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="al" placeholder="Albumin" required>
+</div>
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="su" placeholder="Sugar Level" required>
+</div>
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="bgr" placeholder="Blood Glucose Random" required>
+</div>
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="bu" placeholder="Blood Urea" required>
+</div>
+
+<div class="mb-3">
+<input type="number" step="any" class="form-control" name="sc" placeholder="Serum Creatinine" required>
+</div>
+
+<div class="d-grid">
+<button type="submit" class="btn btn-primary">Predict</button>
+</div>
+
+</form>
+
+{% if prediction_text %}
+    {% if "Detected" in prediction_text %}
+        <div class="result-box result-danger">
+            {{ prediction_text }}
+            {% if confidence_text %}
+                <span class="confidence-text">Model Confidence: {{ confidence_text }}</span>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="result-box result-success">
+            {{ prediction_text }}
+            {% if confidence_text %}
+                <span class="confidence-text">Model Confidence: {{ confidence_text }}</span>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endif %}
+
+</div>
+
+</body>
+</html>

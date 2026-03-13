@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #ffeef0;
+        }
+
+        .container-box {
+            width: 450px;
+            margin: auto;
+            margin-top: 60px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #dc3545;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .result-danger {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+
+        .result-success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+
+        .confidence-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-box">
+
+    <div class="top-buttons">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-sm">← Dashboard</a>
+        <a href="{{ url_for('history') }}" class="btn btn-outline-dark btn-sm">View History</a>
+    </div>
+
+    <h2>❤️ Heart Disease Prediction</h2>
+
+    <form action="/predict_heart" method="post">
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="age" placeholder="Age" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" min="0" max="1" class="form-control" name="sex" placeholder="Sex (0 = Female, 1 = Male)" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="cp" placeholder="Chest Pain Type" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="trestbps" placeholder="Resting Blood Pressure" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="chol" placeholder="Cholesterol" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" min="0" max="1" class="form-control" name="fbs" placeholder="Fasting Blood Sugar (0 or 1)" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="restecg" placeholder="Rest ECG" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="thalach" placeholder="Maximum Heart Rate" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" min="0" max="1" class="form-control" name="exang" placeholder="Exercise Induced Angina (0 or 1)" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" step="any" class="form-control" name="oldpeak" placeholder="Oldpeak" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="slope" placeholder="Slope" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="ca" placeholder="Number of Major Vessels" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" name="thal" placeholder="Thalassemia" required>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-danger">Predict</button>
+        </div>
+    </form>
+
+    {% if prediction_text %}
+        {% if "Detected" in prediction_text %}
+            <div class="result-box result-danger">
+                {{ prediction_text }}
+                {% if confidence_text %}
+                    <span class="confidence-text">Model Confidence: {{ confidence_text }}</span>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="result-box result-success">
+                {{ prediction_text }}
+                {% if confidence_text %}
+                    <span class="confidence-text">Model Confidence: {{ confidence_text }}</span>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+</body>
+</html>
